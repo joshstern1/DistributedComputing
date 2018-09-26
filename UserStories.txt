@@ -1,2 +1,14 @@
-Clients:
--People who want to run large programs in a cloud environment.
+As a lessor, I want to:
+- Make money from my computer
+- Keep my computer secure from threats
+- Resume use of my computer at any time
+- Be able to rent out and take back my computer with ease
+
+As a lessee, I want to:
+- Run computing jobs in the cloud
+- Have my application scaled to match load
+- Only be charged for resources used
+- Keep my code and data private and secure
+- Be able to run code written in any programming language 
+- Achieve low latency and high bandwidth
+- Easy function management
