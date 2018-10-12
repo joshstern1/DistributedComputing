@@ -12,7 +12,7 @@ def downloads():
 
 @flask_app.route('/return-file')
 def return_file():
-    return send_file('/home/joshuastern/Documents/601/DistributedComputing/helloworld.c', attachment_filename='hello.c')
+    return send_file('helloworld.c', attachment_filename='hello.c')
 
 @flask_app.route('/hello')
 def hello(name="You"):
