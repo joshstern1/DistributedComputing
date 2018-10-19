@@ -15,6 +15,11 @@ class MyDB():
         self.my_cursor = self.my_db.cursor()
         
         
+    #Diconnects from database
+    def close_connection(self):
+        self.my_db.disconnect()
+        
+        
     #Updates the users credits   
     def update_credits(self, userID, delta_credits):
         self.my_cursor.execute("""
