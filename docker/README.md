@@ -1,10 +1,19 @@
 # Volunteer Node Container Using Docker
 
 ## Installing Docker
-The following instructions for installing docker were taken from https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04
-We provide the necessary instructions for installation, but more detailed information on installing docker at this link.
+The following instructions for installing docker were taken from https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04. We provide the necessary instructions for installation, but visit the link for more detailed information on installing docker.
 
-https://github.com/joshstern1/DistributedComputing/blob/9c31cd1c5611e906d6af275bf0b1dda73b5c4f1a/docker/docker_installation.txt#L1-L11
+sudo apt update
+
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+
+sudo apt update
+
+sudo apt install docker-ce
 
 
 ## Using Docker
