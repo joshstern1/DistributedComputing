@@ -13,6 +13,9 @@ Our users are divided into 2 groups: lessees and lessors. Lessees would typicall
 -Easy to use interface
 
 ## Docker
+In our cloud, volunteers offer up their computers to run cloud jobs. To do this, we run docker containers on the volunteer nodes that can receive jobs from the master server, run these jobs, and return the output to the master server (which is actually serving as the client in this case).
+
+
 Docker provides “Operating System-Level Virtualization”<br/>
 Runs on isolated Linux container<br/>
 More lightweight than a VM (no hypervisor)<br/>
