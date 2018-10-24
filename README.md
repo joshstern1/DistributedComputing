@@ -12,7 +12,7 @@ Our users are divided into 2 groups: lessees and lessors. Lessees would typicall
 -Easy to use interface
 
 
-<img align="left" width="700" height="500" src="https://raw.githubusercontent.com/joshstern1/DistributedComputing/master/System%20Architecture.PNG">
+<img align="left" width="800" height="500" src="https://raw.githubusercontent.com/joshstern1/DistributedComputing/master/System%20Architecture.PNG">
 
 
 ## Docker
