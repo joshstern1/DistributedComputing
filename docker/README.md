@@ -31,4 +31,6 @@ docker rmi image-name
 ```
 ## Testing Docker
 To test a client that uploads a function to the container:
+```
 python client.py (in a new terminal)
+```
