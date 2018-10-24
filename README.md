@@ -18,6 +18,12 @@ In our cloud, volunteers offer up their computers to run cloud jobs. We've chose
 Docker containers are created from basic “images” by adding layers on top. 
 
 
+## MySQL Database
+We are using a MySQL database to store information about the users and the executables that the users want to run on the system. The database is connected with the Python server and the server can retrieve and set values in the database. How to install and run the MySQL database can be found in the database specific README.
+
+
+
+
 
 
 
