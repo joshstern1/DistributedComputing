@@ -12,6 +12,13 @@ Our users are divided into 2 groups: lessees and lessors. Lessees would typicall
 -Auto-Scaling & Container Migration<br/>
 -Easy to use interface
 
+## Docker
+Docker provides “Operating System-Level Virtualization”<br/>
+Runs on isolated Linux container<br/>
+More lightweight than a VM (no hypervisor)<br/>
+Created from basic “images” by adding layers on top
+
+
 
 
 
