@@ -10,4 +10,4 @@ WORKDIR /app
 RUN pip3 install -r requirements.txt
 
 ENTRYPOINT ["python3"]
-CMD ["flaskapp2.py"]
+CMD ["worker.py"]
