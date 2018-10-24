@@ -6,7 +6,7 @@ Our product is a volunteer cloud that can safely host applications using volunte
 
 Our users are divided into 2 groups: lessees and lessors. Lessees would typically be small businesses for data research scientists, whereas lessors could be anyone with spare computing power. 
 
-### Minimal Viable Product
+#### Minimal Viable Product
 -Ability to run functions in the cloud<br/>
 -Ability to volunteer a computer as a cloud node<br/>
 -Auto-Scaling & Container Migration<br/>
