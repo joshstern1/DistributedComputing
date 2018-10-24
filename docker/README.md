@@ -1,12 +1,18 @@
 # Volunteer Node Container Using Docker
 
-## To manage docker containers:
-To create container:
-docker build -t hello-world .
+## Installing Docker
+The following instructions for installing docker were taken from https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04
+We provide the necessary instructions for installation, but more detailed information on installing docker at this link.
+ 
+sudo apt update
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+sudo apt update
+sudo apt install docker-ce
 
-To run container:
-docker run -p 8000:8000 hello-world (first port # is on localhost, second port # is in the container)
 
+## Using Docker
 To stop a container:
 docker stop container-name
 
@@ -16,6 +22,6 @@ docker rm container-name
 To remove a docker image:
 docker rmi image-name
 
-## To test docker:
+## Testing Docker
 To test a client that uploads a function to the container:
 python client.py (in a new terminal)
