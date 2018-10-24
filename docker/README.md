@@ -2,7 +2,7 @@
 
 ## Installing Docker
 The following instructions for installing docker were taken from https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04. We provide the necessary instructions for installation, but visit the link for more detailed information on installing docker.
-
+```
 sudo apt update
 
 sudo apt install apt-transport-https ca-certificates curl software-properties-common
@@ -14,7 +14,7 @@ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubun
 sudo apt update
 
 sudo apt install docker-ce
-
+```
 
 ## Using Docker
 ### To stop a container:
