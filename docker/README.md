@@ -17,13 +17,16 @@ sudo apt install docker-ce
 
 
 ## Using Docker
-To stop a container:
+### To stop a container:
+
 docker stop container-name
 
-To remove a running container:
+### To remove a running container:
+
 docker rm container-name
 
-To remove a docker image:
+### To remove a docker image:
+
 docker rmi image-name
 
 ## Testing Docker
