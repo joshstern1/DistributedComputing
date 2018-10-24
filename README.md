@@ -13,13 +13,10 @@ Our users are divided into 2 groups: lessees and lessors. Lessees would typicall
 -Easy to use interface
 
 ## Docker
-In our cloud, volunteers offer up their computers to run cloud jobs. To do this, we run docker containers on the volunteer nodes that can receive jobs from the master server, run these jobs, and return the output to the master server (which is actually serving as the client in this case).
+In our cloud, volunteers offer up their computers to run cloud jobs. We've chosen to use containers rather than virtual machines, due to how light containers are since they run in Linux and do not require a hypervisor. This gives us the ability to run more jobs on a volunteer worker with this extra space. We use docker containers that are responsible for receiving jobs from the master server, runing these jobs, and returning the output to the master server (which is actually serving as the client in this case).
 
+Docker containers are created from basic “images” by adding layers on top. 
 
-Docker provides “Operating System-Level Virtualization”<br/>
-Runs on isolated Linux container<br/>
-More lightweight than a VM (no hypervisor)<br/>
-Created from basic “images” by adding layers on top
 
 
 
