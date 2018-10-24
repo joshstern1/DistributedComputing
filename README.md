@@ -1,4 +1,4 @@
-# DistributedComputing: EC601 Project
+# EC601 Project: DistributedComputing
 
 ## Intro
 Our product is a volunteer cloud that can safely host applications using volunteered resources, and those volunteering for resource usage. This is useful for business that need to run web functions without buying physical servers & individuals who need to make money from their CPU. Unlike AWS Lambda and other FaaS Providers, the our product offers serverless computing for lower costs and allows people to receive payment for volunteering their idle computers.
