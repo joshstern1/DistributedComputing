@@ -17,6 +17,16 @@ sudo apt install docker-ce
 ```
 
 ## Using Docker
+To create container:
+```
+docker build -t hello-world
+```
+
+To run container:
+```
+docker run -p 8000:8000 hello-world
+```
+
 To stop a container:
 ```
 docker stop container-name
