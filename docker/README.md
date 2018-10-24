@@ -1,4 +1,5 @@
 # Volunteer Node Container Using Docker
+In our cloud, volunteers offer up their computers to run cloud jobs. To do this, we run docker containers on the volunteer nodes that can receive jobs from the master server, run these jobs, and return the output to the master server (which is actually serving as the client in this case). 
 
 ## Installing Docker
 The following instructions for installing docker were taken from https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04. We provide the necessary instructions for installation, but visit the link for more detailed information on installing docker.
