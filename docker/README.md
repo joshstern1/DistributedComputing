@@ -11,7 +11,6 @@ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubun
 sudo apt update
 sudo apt install docker-ce
 
-
 ## Using Docker
 To stop a container:
 docker stop container-name
