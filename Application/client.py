@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import filedialog
 
 def authenticate_user(*args):
 	"""Add code to take the entry field data and 
@@ -15,12 +16,12 @@ def save_results(*args):
 	pass
 
 def browse_function(*args):
-	"""Add code to open a browse pop up to select file to be uploaded"""
-	pass
+	"""Code to open a browse pop up to select file to be uploaded"""
+	upload_fp.set(filedialog.askopenfilename(initialdir = "/", title = "Select File", filetypes = (("Python Files","*.py"),("CPP files","*.cpp"),("All files","*.*"))))
 
 def browse_destination(*args):
-	"""Add code to open browse pop up to select destination folder"""
-	pass
+	"""Code to open browse pop up to select destination folder"""
+	save_fp.set(filedialog.askdirectory())
 
 root = Tk()
 root.title("Chop-out: Client Application")
@@ -46,15 +47,17 @@ id_entry.grid(column = 1, row = 0, sticky = (W, E))
 pass_entry = ttk.Entry(mainframe, width = 15, textvariable = password)
 pass_entry.grid(column = 1, row = 1, sticky = (W, E))
 
+ttk.Button(mainframe, text = 'Browse', command = browse_function).grid(column = 0, row = 3, sticky = (E, W))
+
 upload_fp_entry = ttk.Entry(mainframe, width = 15, textvariable = upload_fp)
 upload_fp_entry.grid(column = 1, row = 3, sticky = (W, E))
+
+ttk.Button(mainframe, text = 'Browse', command = browse_destination).grid(column = 0, row = 5, sticky = (E, W))
 
 save_fp_entry = ttk.Entry(mainframe, width = 15, textvariable = save_fp)
 save_fp_entry.grid(column = 1, row = 5, sticky = (W, E))
 
 ttk.Button(mainframe, text = 'Login', command = authenticate_user).grid(column = 2, row = 1, sticky = (E, W))
-ttk.Button(mainframe, text = 'Browse', command = browse_function).grid(column = 0, row = 3, sticky = (E, W))
-ttk.Button(mainframe, text = 'Browse', command = browse_destination).grid(column = 0, row = 5, sticky = (E, W))
 ttk.Button(mainframe, text = 'Upload', command = upload_function).grid(column = 2, row = 3, sticky = (E, W))
 ttk.Button(mainframe, text = 'Save', command = save_results).grid(column = 2, row = 5, sticky = (E, W))
 
