@@ -1,4 +1,4 @@
-# Tested with Python 2.7.9, Linux & Mac OS X
+#!/usr/bin/env python
 import socket
 try:
     from StringIO import StringIO
@@ -6,8 +6,6 @@ except ImportError:
     from io import StringIO
 import sys
 import os
-
-
 
 class WSGIServer(object):
 
