@@ -26,9 +26,9 @@ class MyDB():
     def add_new_user(self, username, password):
         if not self.check_if_username_present(username):
             self.my_cursor.execute("""
-                INSERT INTO user (username, password, credits)
-                VALUES (%s, %s, %s)
-            """, (username, password, 0))
+                INSERT INTO user (username, password)
+                VALUES (%s, %s)
+            """, (username, password))
             self.my_db.commit()
             self.my_cursor.execute("""
                 SELECT userID
@@ -153,15 +153,18 @@ class MyDB():
     def add_executable(self, userID, executable_name, executable):
         return True
     
+    
     #TODO
     #Updates existing executable on database
     def set_executable(self, executableID, executable):
         return True
     
+    
     #TODO
     #Updates name of executable
     def set_executable_name(self, executableID, executable_name):
         return True
+    
     
     #TODO
     #Returns a list of executables for given user
@@ -169,30 +172,36 @@ class MyDB():
     def get_users_executables(self, userID):
         return True
     
+    
     #TODO
     #Returns the binary executable file
     def get_executable(self, executableID):
         return True
+    
     
     #TODO
     #Returns executable name
     def get_executable_name(self, executableID):
         return True
     
+    
     #TODO
     #Update result File
     def set_result(self, executableID, result):
         return True
+    
     
     #TODO
     #Returns result File or False if one does not exist
     def get_result(self, executableID):
         return True
     
+    
     #TODO
     #Update Hardware rating for user
     def set_hardware_rating(self, userID, hardware_rating):
         return True
+    
     
     #TODO
     #Returns hardware rating for user or False if one does not exist
@@ -200,5 +209,5 @@ class MyDB():
         return True
     
     
-                
+    
     

@@ -24,26 +24,13 @@ CREATE TABLE IF NOT EXISTS `distcompschema`.`user` (
   `userID` INT(11) NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
-  `credits` INT(11) NOT NULL,
+  `credits` INT(11) ZEROFILL NOT NULL,
+  `hardware_rating` INT(11) NULL,
   PRIMARY KEY (`userID`),
-  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE)
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE,
+  UNIQUE INDEX `userID_UNIQUE` (`userID` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 51
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `distcompschema`.`lessoruser`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `distcompschema`.`lessoruser` (
-  `userID` INT(11) NOT NULL,
-  `numExecutables` INT(11) NOT NULL,
-  PRIMARY KEY (`userID`),
-  CONSTRAINT `userID`
-    FOREIGN KEY (`userID`)
-    REFERENCES `distcompschema`.`user` (`userID`))
-ENGINE = InnoDB
+AUTO_INCREMENT = 52
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -52,48 +39,18 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- Table `distcompschema`.`executables`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `distcompschema`.`executables` (
+  `executableID` INT(11) NOT NULL AUTO_INCREMENT,
   `userID` INT(11) NOT NULL,
-  `executableID` INT(11) NOT NULL,
   `executableName` VARCHAR(45) NOT NULL,
-  `numThreads` INT(11) NOT NULL,
-  `executable` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`userID`, `executableID`),
-  CONSTRAINT `userID2`
+  `executable` MEDIUMBLOB NOT NULL,
+  `result` MEDIUMBLOB NULL,
+  UNIQUE INDEX `executableID_UNIQUE` (`executableID` ASC) VISIBLE,
+  INDEX `userID_idx` (`userID` ASC) VISIBLE,
+  CONSTRAINT `userID`
     FOREIGN KEY (`userID`)
-    REFERENCES `distcompschema`.`lessoruser` (`userID`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `distcompschema`.`lesseeuser`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `distcompschema`.`lesseeuser` (
-  `userID` INT(11) NOT NULL,
-  `hardwareRating` INT(11) NOT NULL,
-  PRIMARY KEY (`userID`),
-  CONSTRAINT `userID4`
-    FOREIGN KEY (`userID`)
-    REFERENCES `distcompschema`.`user` (`userID`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `distcompschema`.`threads`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `distcompschema`.`threads` (
-  `userID` INT(11) NOT NULL,
-  `executableID` INT(11) NOT NULL,
-  `threadID` INT(11) NOT NULL,
-  `threadName` VARCHAR(45) NOT NULL,
-  `thread` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`userID`, `executableID`, `threadID`),
-  CONSTRAINT `userID3`
-    FOREIGN KEY (`userID` , `executableID`)
-    REFERENCES `distcompschema`.`executables` (`userID` , `executableID`))
+    REFERENCES `distcompschema`.`user` (`userID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
