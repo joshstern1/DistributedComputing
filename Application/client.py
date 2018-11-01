@@ -1,6 +1,31 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
+import sys
+sys.path.append("../database")
+import MyDB
+
+def new_user_function(*args):
+	pass
+def new_user_function_popup(*args):
+	"""This will open a pop up window for adding new users"""
+	user_popup = Toplevel()
+	user_popup.title("Create New user")
+	
+	new_email = ttk.Label(user_popup, text = "Enter Email ID").grid(column = 0, row = 0, sticky = E)
+	new_password = ttk.Label(user_popup, text = "New Password").grid(column = 0, row = 1, sticky = E)
+	confirm_password = ttk.Label(user_popup, text = "Confirm Password").grid(column = 0, row = 2, sticky = E)
+
+	email = StringVar()
+	password = StringVar()
+	confirm_pass = StringVar()
+
+	ttk.Entry(user_popup, width = 25, textvariable = email).grid(column = 1, row = 0, sticky = (E,W))
+	ttk.Entry(user_popup, width = 25, textvariable = password).grid(column = 1, row = 1, sticky = (E,W))
+	ttk.Entry(user_popup, width = 25, textvariable = confirm_pass).grid(column = 1, row = 2, sticky = (E,W))
+
+	ttk.Button(user_popup, text = 'Create', command = new_user_function).grid(column = 1, row = 3, sticky = (E,W))
+
 
 def authenticate_user(*args):
 	"""Add code to take the entry field data and 
@@ -23,6 +48,12 @@ def browse_destination(*args):
 	"""Code to open browse pop up to select destination folder"""
 	save_fp.set(filedialog.askdirectory())
 
+def red_text(event=None):
+    new_user.config(foreground = "red")
+
+def black_text(event=None):
+    new_user.config(foreground = "black")
+
 root = Tk()
 root.title("Chop-out: Client Application")
 
@@ -35,6 +66,12 @@ user_id = StringVar()
 password = StringVar()
 upload_fp = StringVar()
 save_fp = StringVar()
+
+new_user = ttk.Label(mainframe, text = 'New User?')
+new_user.grid(column = 2, row = 0, sticky = (E,W))
+new_user.bind('<Button-1>',new_user_function_popup)
+new_user.bind('<Enter>',red_text)
+new_user.bind('<Leave>',black_text)
 
 ttk.Label(mainframe, text = 'User').grid(column = 0, row = 0, sticky = E)
 ttk.Label(mainframe, text = 'Password').grid(column =0, row = 1, sticky = E)
