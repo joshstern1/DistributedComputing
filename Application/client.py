@@ -1,12 +1,16 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
+from tkinter import messagebox
 import sys
 sys.path.append("../database")
 import MyDB
 
 def new_user_function(*args):
-	pass
+	
+	
+	MyDB.add_new_user(new_email, new_password)
+
 def new_user_function_popup(*args):
 	"""This will open a pop up window for adding new users"""
 	user_popup = Toplevel()
@@ -24,8 +28,7 @@ def new_user_function_popup(*args):
 	ttk.Entry(user_popup, width = 25, textvariable = password).grid(column = 1, row = 1, sticky = (E,W))
 	ttk.Entry(user_popup, width = 25, textvariable = confirm_pass).grid(column = 1, row = 2, sticky = (E,W))
 
-	ttk.Button(user_popup, text = 'Create', command = new_user_function).grid(column = 1, row = 3, sticky = (E,W))
-
+	ttk.Button(user_popup, text = 'Create', command = new_user_function).grid(column = 1, row = 3, sticky = (E,W))	
 
 def authenticate_user(*args):
 	"""Add code to take the entry field data and 
