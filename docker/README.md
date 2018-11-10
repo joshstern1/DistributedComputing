@@ -21,7 +21,7 @@ sudo apt install docker-ce
 Docker containers are created from a basic image with layers added on top. These layers include installations and tools specific to the programs running within the container. Images are built using a Dockerfile, which specifies what needs to go into the container. Once a container image is built, the containers can be run, paused, resumed, or removed.
 To create container:
 ```
-docker build -t hello-world
+docker build -t hello-world .
 ```
 
 To run container:
