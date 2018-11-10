@@ -9,7 +9,7 @@ class MyDB():
                 port = "PORT",
                 user = "root",
                 passwd = "PASSWORD",
-                database = "distcompschema"
+                database = "distcompschema",
         )
         
         self.my_cursor = self.my_db.cursor()
