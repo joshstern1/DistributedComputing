@@ -34,7 +34,14 @@ def new_user_function_popup(*args):
 def authenticate_user(*args):
 	"""Add code to take the entry field data and 
 	authenticate with the server"""
-	pass
+	check = myDB.login_user(user_id.get(), password.get())
+	if check = None:
+		messagebox.showinfo("Wrong Password. Please try again")
+	else:
+		Upload.config(state = NORMAL)
+		Save.config(state = NORMAL)
+
+
 
 def upload_function(*args):
 	"""Add code to upload the given file to the server"""
@@ -100,8 +107,8 @@ save_fp_entry = ttk.Entry(mainframe, width = 15, textvariable = save_fp)
 save_fp_entry.grid(column = 1, row = 5, sticky = (W, E))
 
 ttk.Button(mainframe, text = 'Login', command = authenticate_user).grid(column = 2, row = 1, sticky = (E, W))
-ttk.Button(mainframe, text = 'Upload', command = upload_function).grid(column = 2, row = 3, sticky = (E, W))
-ttk.Button(mainframe, text = 'Save', command = save_results).grid(column = 2, row = 5, sticky = (E, W))
+Upload = ttk.Button(mainframe, text = 'Upload', command = upload_function, state = DISABLED).grid(column = 2, row = 3, sticky = (E, W))
+Save = ttk.Button(mainframe, text = 'Save', command = save_results, state = DISABLED).grid(column = 2, row = 5, sticky = (E, W))
 
 for child in mainframe.winfo_children(): child.grid_configure(padx = 5, pady = 5)
 myDB.close_connection()
