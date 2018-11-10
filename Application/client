@@ -35,7 +35,7 @@ def authenticate_user(*args):
 	"""Add code to take the entry field data and 
 	authenticate with the server"""
 	check = myDB.login_user(user_id.get(), password.get())
-	if check = None:
+	if check == None:
 		messagebox.showinfo("Wrong Password. Please try again")
 	else:
 		Upload.config(state = NORMAL)
@@ -64,6 +64,9 @@ def red_text(event=None):
 
 def black_text(event=None):
     new_user.config(foreground = "black")
+
+def closing():
+	myDB.close_connection()
 
 root = Tk()
 root.title("Chop-out: Client Application")
@@ -111,5 +114,6 @@ Upload = ttk.Button(mainframe, text = 'Upload', command = upload_function, state
 Save = ttk.Button(mainframe, text = 'Save', command = save_results, state = DISABLED).grid(column = 2, row = 5, sticky = (E, W))
 
 for child in mainframe.winfo_children(): child.grid_configure(padx = 5, pady = 5)
-myDB.close_connection()
+
+root.protocol("WM_DELETE_WINDOW", closing)
 root.mainloop()
