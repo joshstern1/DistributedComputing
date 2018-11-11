@@ -9,7 +9,7 @@ class MyDB():
                 port = "PORT",
                 user = "root",
                 passwd = "PASSWORD",
-                database = "distcompschema",
+                database = "distcompschema"
         )
         
         self.my_cursor = self.my_db.cursor()
@@ -59,18 +59,11 @@ class MyDB():
     #Updates the users credits   
     def update_credits(self, userID, delta_credits):
         self.my_cursor.execute("""
-            SELECT credits
-            FROM user 
-            WHERE userID = %d
-        """ %(userID))
-        cur_credits = self.my_cursor.fetchone()[0]
-        new_credits = cur_credits + delta_credits
-        self.my_cursor.execute("""
             UPDATE user
-            SET credits = %d
+            SET credits = credits + %d
             WHERE userID = %d
-        """ %(new_credits, userID))
-        self.my_db.commit()
+        """ %(delta_credits, userID))
+        self.my_db.commit()  
         
         
     #Returns the number of credits a user has
