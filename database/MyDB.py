@@ -1,4 +1,5 @@
 import mysql.connector
+import re
 
 class MyDB():
     
@@ -20,24 +21,31 @@ class MyDB():
         self.my_db.disconnect()
         
     
-    #TODO check for valid email format function to add to this and check original username
     #Attempts to add new user
-    #Returns userID and False if username already used
+    #Returns userID if successful and False if username already used
     def add_new_user(self, username, password):
-        if not self.check_if_username_present(username):
+        if (not self.check_if_username_present(username)) and MyDB.check_email_format(username):
             self.my_cursor.execute("""
                 INSERT INTO user (username, password)
                 VALUES (%s, %s)
             """, (username, password))
-            self.my_db.commit()
             self.my_cursor.execute("""
-                SELECT userID
-                FROM user 
-                WHERE username = '%s'
-            """ %(username))
+                SELECT LAST_INSERT_ID()
+                """)
             result = self.my_cursor.fetchone()[0]
+            self.my_db.commit()
         else:
             result = False
+        return result
+    
+    
+    #Returns if given string in in the form of an email
+    #Just checks for @ and . present with . after @
+    @staticmethod
+    def check_email_format(username):
+        result = False
+        if re.match(r"[^@]+@[^@]+\.[^@]+", username):
+            result = True
         return result
         
     
@@ -140,67 +148,235 @@ class MyDB():
         """ %(userID))
         self.my_db.commit()
         
+    
+    #Returns data in provided file
+    @staticmethod
+    def read_file(filename):
+        try:
+            with open(filename, 'rb') as f:
+                data = f.read()
+            return data
+        except:
+            print("Read File Error")
+    
+    
+    #Writes file from given data
+    @staticmethod
+    def write_file(data, filepath):
+        try:
+            with open(filepath, 'wb') as f:
+                f.write(data.encode())
+        except Exception as e:
+            print(e)
+    
         
-    #TODO
-    #Adds new executable to database
+    #Adds new executable to database returns executable ID
     def add_executable(self, userID, executable_name, executable):
-        return True
+        try:
+            self.my_cursor.execute("""
+                INSERT INTO executables (userID, executableName, executable)
+                VALUES (%s, %s, %s)
+            """, (userID, executable_name, executable))
+            self.my_cursor.execute("""
+                SELECT LAST_INSERT_ID()
+            """)
+            result = self.my_cursor.fetchone()[0]
+            self.my_db.commit()
+            return result
+        except:
+            print("add_executable error")
     
     
-    #TODO
+    #Adds new executable from file path to database returns executable ID
+    def add_executable_from_file(self, userID, executable_name, filepath):
+        try:
+            data = MyDB.read_file(filepath)
+            self.my_cursor.execute("""
+                INSERT INTO executables (userID, executableName, executable)
+                VALUES (%s, %s, %s)
+            """, (userID, executable_name, data))
+            self.my_cursor.execute("""
+                SELECT LAST_INSERT_ID()
+            """)
+            result = self.my_cursor.fetchone()[0]
+            self.my_db.commit()
+            return result    
+        except:
+            print("add_executable_from_file error")
+            
+            
+    #Returns the binary executable file
+    def get_executable(self, executableID):
+        try:
+            self.my_cursor.execute("""
+                SELECT executable
+                FROM executables
+                WHERE executableID = %d
+            """ %(executableID))
+            return self.my_cursor.fetchone()[0].encode()
+        except:
+            print("get_executable error")
+    
+    
+    #Saves executable to given filepath
+    def save_executable_to_path(self, executableID, filepath):
+        try:
+            self.my_cursor.execute("""
+                SELECT executable
+                FROM executables
+                WHERE executableID = %d
+            """ %(executableID))
+            data = self.my_cursor.fetchone()[0]
+            MyDB.write_file(data, filepath)             
+        except:
+            print("save_executable_to_path error")
+    
+    
     #Updates existing executable on database
-    def set_executable(self, executableID, executable):
-        return True
+    def set_executable_from_file(self, executableID, filepath):
+        try:
+            data = MyDB.read_file(filepath)
+            sql = """
+                UPDATE executables
+                SET executable = %s
+                WHERE executableID = %s
+            """ 
+            val = (data, executableID)
+            self.my_cursor.execute(sql, val)
+            self.my_db.commit()
+        except:
+            print("set_executable_from_file error")
     
     
-    #TODO
+    #Updates existing executable on database
+    def set_executable(self, executableID, data):
+        try:
+            sql = """
+                UPDATE executables
+                SET executable = %s
+                WHERE executableID = %s
+            """ 
+            val = (data, executableID)
+            self.my_cursor.execute(sql, val)
+            self.my_db.commit()
+        except:
+            print("set_executable error")
+    
+    
     #Updates name of executable
     def set_executable_name(self, executableID, executable_name):
-        return True
+        sql = """
+            UPDATE executables
+            SET executableName = %s
+            WHERE executableID = %s
+        """ 
+        val = (executable_name, executableID)
+        self.my_cursor.execute(sql, val)
+        self.my_db.commit()
     
     
-    #TODO
     #Returns a list of executables for given user
     #Returns if form (executable_name, executableID)
     def get_users_executables(self, userID):
-        return True
+        self.my_cursor.execute("""
+            SELECT executableName, executableID
+            FROM executables
+            WHERE userID = %d
+        """ %(userID))
+        return self.my_cursor.fetchall()
+      
     
-    
-    #TODO
-    #Returns the binary executable file
-    def get_executable(self, executableID):
-        return True
-    
-    
-    #TODO
     #Returns executable name
     def get_executable_name(self, executableID):
-        return True
+        self.my_cursor.execute("""
+            SELECT executableName
+            FROM executables
+            WHERE executableID = %d
+        """ %(executableID))
+        return self.my_cursor.fetchone()[0]
     
     
-    #TODO
     #Update result File
-    def set_result(self, executableID, result):
-        return True
+    def set_result_from_file(self, executableID, filepath):
+        try:
+            data = MyDB.read_file(filepath)
+            sql = """
+                UPDATE executables
+                SET result = %s
+                WHERE executableID = %s
+            """ 
+            val = (data, executableID)
+            self.my_cursor.execute(sql, val)
+            self.my_db.commit()
+        except:
+            print("set_result_from_file error")
     
     
-    #TODO
+    #Update result File
+    def set_result(self, executableID, data):
+        try:
+            sql = """
+                UPDATE executables
+                SET result = %s
+                WHERE executableID = %s
+            """ 
+            val = (data, executableID)
+            self.my_cursor.execute(sql, val)
+            self.my_db.commit()
+        except:
+            print("set_result error")
+    
+    
     #Returns result File or False if one does not exist
     def get_result(self, executableID):
-        return True
+        try:
+            self.my_cursor.execute("""
+                SELECT result
+                FROM executables
+                WHERE executableID = %d
+            """ %(executableID))
+            return self.my_cursor.fetchone()[0].encode()
+        except:
+            print("get_result error")
     
     
-    #TODO
+    #Returns result File or False if one does not exist
+    def save_result_to_file(self, executableID, filepath):
+        try:
+            self.my_cursor.execute("""
+                SELECT result
+                FROM executables
+                WHERE executableID = %d
+            """ %(executableID))
+            data = self.my_cursor.fetchone()[0]
+            MyDB.write_file(data, filepath)             
+        except:
+            print("save_result_to_file error")
+    
+    
     #Update Hardware rating for user
     def set_hardware_rating(self, userID, hardware_rating):
-        return True
+        self.my_cursor.execute("""
+            UPDATE user
+            SET hardwareRating = %d
+            WHERE userID = %d
+        """ %(hardware_rating, userID))
+        self.my_db.commit()  
     
     
-    #TODO
     #Returns hardware rating for user or False if one does not exist
     def get_hardware_rating(self, userID):
-        return True
+        self.my_cursor.execute("""
+            SELECT hardwareRating
+            FROM user
+            WHERE userID = %d
+        """ %(userID))
+        result = self.my_cursor.fetchone()[0]
+        if result == None:
+            result = False
+        return result
     
+       
     
     
     
