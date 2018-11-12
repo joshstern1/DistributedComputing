@@ -9,10 +9,9 @@ class MyDB():
                 host = "IP",
                 port = "PORT",
                 user = "root",
-                passwd = "PASSWORD",
+                password = "PASSWORD",
                 database = "distcompschema"
-        )
-        
+        )    
         self.my_cursor = self.my_db.cursor()
         
         
@@ -24,7 +23,8 @@ class MyDB():
     #Attempts to add new user
     #Returns userID if successful and False if username already used
     def add_new_user(self, username, password):
-        if (not self.check_if_username_present(username)) and MyDB.check_email_format(username):
+        if (not self.check_if_username_present(username)) \
+                    and MyDB.check_email_format(username):
             self.my_cursor.execute("""
                 INSERT INTO user (username, password)
                 VALUES (%s, %s)
@@ -167,7 +167,7 @@ class MyDB():
             with open(filepath, 'wb') as f:
                 f.write(data.encode())
         except Exception as e:
-            print(e)
+            print("write_file error")
     
         
     #Adds new executable to database returns executable ID
@@ -375,8 +375,5 @@ class MyDB():
         if result == None:
             result = False
         return result
-    
-       
-    
     
     
