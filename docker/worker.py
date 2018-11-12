@@ -8,14 +8,8 @@ app = Flask(__name__)
 
 userfunc = None
 
-
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=["GET", "POST"]) #allow both GET and POST requests
 def hello():
-    return "Hello World"
-
-
-@app.route('/hello', methods=["GET", "POST"]) #allow both GET and POST requests
-def form_example():
     if request.method == "POST": #if a file is uploaded
 
         #get uploaded file from client (master server)
@@ -35,4 +29,4 @@ def form_example():
 
     return "The post did not work"
 
-app.run(host='0.0.0.0', port=8000)
+app.run(host='0.0.0.0', port=8080)
