@@ -1,4 +1,4 @@
-# Volunteer Node Container Using Docker
+# Volunteer Node Container Using Docker and Kubernetes
 In our cloud, volunteers offer up their computers to run cloud jobs. To do this, we run docker containers on the volunteer nodes that can receive jobs from the master server, run these jobs, and return the output to the master server (which is actually serving as the client in this case).
 
 ## Installing Docker
@@ -46,3 +46,18 @@ To test a client that uploads a function to the container:
 ```
 python client.py (in a new terminal)
 ```
+
+## Installing Minikube and Kubectl
+Install kubectl:
+'''
+sudo apt-get update && sudo apt-get install -y apt-transport-https
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubectl
+'''
+
+Install Minikube:
+'''
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.30.0/minikube-linux-amd64 && chmod +x minikube && sudo cp minikube /usr/local/bin/ && rm minikube
+'''
