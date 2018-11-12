@@ -63,6 +63,11 @@ Start Minikube cluster:
 sudo minikube start
 ```
 
+Stop Minikube:
+```
+sudo minikube stop
+```
+
 Create Deployment:
 ```
 sudo kubectl run hello-world --image=gcr.io/api-project-vision/hello-world --port=8080
