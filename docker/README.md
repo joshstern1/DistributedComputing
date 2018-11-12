@@ -73,7 +73,7 @@ Expose Deployment (Create Service):
 sudo kubectl expose deployment/hello-world --type="NodePort" --port 8080
 ```
 
-##Testing Kubernetes
+## Testing Kubernetes
 ```
 python client.py
 ```
