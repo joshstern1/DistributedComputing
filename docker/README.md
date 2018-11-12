@@ -65,5 +65,15 @@ sudo minikube start
 
 Create Deployment:
 ```
-sudo kubectl run hello-world --image
+sudo kubectl run hello-world --image=gcr.io/api-project-vision/hello-world --port=8080
+```
+
+Expose Deployment (Create Service):
+```
+sudo kubectl expose deployment/hello-world --type="NodePort" --port 8080
+```
+
+##Testing Kubernetes
+```
+python client.py
 ```
