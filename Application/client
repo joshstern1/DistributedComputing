@@ -46,7 +46,7 @@ def authenticate_user(*args):
 	baseURL = 'http://' + IP_Add_Server + PORT
 	postURL = baseURL + '/authenticate'
 	data = {'username': user_id.get(),'password': password.get()}
-	r = requests.post(url = postURL, data = data)
+	check = requests.post(url = postURL, data = data)
 	if check == None:
 		messagebox.showinfo("Wrong Password. Please try again")
 	else:
