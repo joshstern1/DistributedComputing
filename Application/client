@@ -5,15 +5,22 @@ from tkinter import ttk
 from tkinter import filedialog
 from tkinter import messagebox
 import sys
-sys.path.append("../database")
-from MyDB import MyDB
-myDB = MyDB()
+# sys.path.append("../database")
+# from MyDB import MyDB
+# myDB = MyDB()
+
+IP_Add_Server = "Enter the Server IP Address"
+PORT = "Port number"
 
 def new_user_function(*args):
 	
 	print(password.get())
 	if password.get() == confirm_pass.get():
-		myDB.add_new_user(email, password)
+		baseURL = 'http://' + IP_Add_Server + PORT
+		postURL = baseURL + '/new-user'
+		data = {'username': user_id.get(),'password': password.get()}
+		r = requests.post(url = postURL, data = data)
+		response = r.text #Response to the request made is stored, not really required
 	else:
 		messagebox.showinfo("Passwords don't match")
 
@@ -66,7 +73,9 @@ def black_text(event=None):
     new_user.config(foreground = "black")
 
 def closing():
-	myDB.close_connection()
+	"""This function defines what happens if you close the application"""
+	pass
+# 	myDB.close_connection()
 
 root = Tk()
 root.title("Chop-out: Client Application")
