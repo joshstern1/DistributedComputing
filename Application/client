@@ -53,7 +53,7 @@ def save_results(*args):
 
 def browse_function(*args):
 	"""Code to open a browse pop up to select file to be uploaded"""
-	upload_fp.set(iledialog.askopenfilename(initialdir = "/", title = "Select File", filetypes = (("Python Files","*.py"),("CPP files","*.cpp"),("All files","*.*"))))
+	upload_fp.set(filedialog.askopenfilename(initialdir = "/", title = "Select File", filetypes = (("Python Files","*.py"),("CPP files","*.cpp"),("All files","*.*"))))
 
 def browse_destination(*args):
 	"""Code to open browse pop up to select destination folder"""
