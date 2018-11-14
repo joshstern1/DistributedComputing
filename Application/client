@@ -43,13 +43,15 @@ def new_user_function_popup(*args):
 def authenticate_user(*args):
 	"""Add code to take the entry field data and 
 	authenticate with the server"""
-	check = myDB.login_user(user_id.get(), password.get())
+	baseURL = 'http://' + IP_Add_Server + PORT
+	postURL = baseURL + '/authenticate'
+	data = {'username': user_id.get(),'password': password.get()}
+	r = requests.post(url = postURL, data = data)
 	if check == None:
 		messagebox.showinfo("Wrong Password. Please try again")
 	else:
 		Upload.config(state = NORMAL)
 		Save.config(state = NORMAL)
-
 
 
 def upload_function(*args):
@@ -74,9 +76,9 @@ def red_text(event=None):
 def black_text(event=None):
     new_user.config(foreground = "black")
 
-def closing():
-	"""This function defines what happens if you close the application"""
-	pass
+# def closing():
+# 	"""This function defines what happens if you close the application"""
+# 	pass
 # 	myDB.close_connection()
 
 root = Tk()
@@ -126,5 +128,5 @@ Save = ttk.Button(mainframe, text = 'Save', command = save_results, state = DISA
 
 for child in mainframe.winfo_children(): child.grid_configure(padx = 5, pady = 5)
 
-root.protocol("WM_DELETE_WINDOW", closing)
+# root.protocol("WM_DELETE_WINDOW", closing)
 root.mainloop()
