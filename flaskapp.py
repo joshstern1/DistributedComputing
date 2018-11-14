@@ -1,4 +1,10 @@
 from flask import Flask, Response, send_file, render_template, request, session, make_response, redirect, url_for, flash, g
+import sys
+import atexit
+
+sys.path.append("./database")
+from MyDB import MyDB
+myDB = MyDB()
 
 flask_app = Flask('flaskapp')
 
@@ -13,6 +19,12 @@ def downloads():
 @flask_app.route('/return-file')
 def return_file():
     return send_file('helloworld.c', attachment_filename='hello.c')
+# To add new user in the database
+@flask_app.route('/new-user', methods = ['POST'])
+def adduser():
+	ID = request.form['username']
+	Pswd = request.form['password']
+	
 
 @flask_app.route('/hello')
 def hello(name="You"):
@@ -21,4 +33,8 @@ def hello(name="You"):
         mimetype='text/plain'
     )
 
+def closing():
+	myDB.close_connection()
+
+atexit(closing)
 app = flask_app.wsgi_app
