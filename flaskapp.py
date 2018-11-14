@@ -19,12 +19,20 @@ def downloads():
 @flask_app.route('/return-file')
 def return_file():
     return send_file('helloworld.c', attachment_filename='hello.c')
+
 # To add new user in the database
 @flask_app.route('/new-user', methods = ['POST'])
 def adduser():
 	ID = request.form['username']
 	Pswd = request.form['password']
-	
+	return myDB.add_new_user(ID, Pswd)
+
+# To check the credentials
+@flask_app.route('/authenticate', methods = ['GET'])
+def checkuser():
+	ID = request.form['username']
+	Pswd = request.form['password']
+	return myDB.login_user(ID, Pswd)
 
 @flask_app.route('/hello')
 def hello(name="You"):
@@ -37,4 +45,6 @@ def closing():
 	myDB.close_connection()
 
 atexit(closing)
-app = flask_app.wsgi_app
+
+if __name__=='__main__':
+	app.run()
