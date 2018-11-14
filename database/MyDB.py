@@ -276,7 +276,7 @@ class MyDB():
     
     
     #Returns a list of executables for given user
-    #Returns if form (executable_name, executableID)
+    #Returns in form (executable_name, executableID)
     def get_users_executables(self, userID):
         self.my_cursor.execute("""
             SELECT executableName, executableID
@@ -296,7 +296,7 @@ class MyDB():
         return self.my_cursor.fetchone()[0]
     
     
-    #Update result File
+    #Update result File from file
     def set_result_from_file(self, executableID, filepath):
         try:
             data = MyDB.read_file(filepath)
