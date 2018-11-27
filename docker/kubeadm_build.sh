@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "starting kubernetes..."
 swapoff -a
 kubeadm init --pod-network-cidr=192.168.0.0/16 > joining.txt
 mkdir -p $HOME/.kube

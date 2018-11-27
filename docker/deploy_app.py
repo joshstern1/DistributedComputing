@@ -2,6 +2,7 @@ import os
 import time
 try:
 
+    #os.system("docker build -t hello-world .")
     os.system("kubectl run hello-world --image=gcr.io/api-project-vision/hello-world --port=8080")
     time.sleep(5)
     os.system('kubectl expose deployment/hello-world --type="ClusterIP" --port 8080')
