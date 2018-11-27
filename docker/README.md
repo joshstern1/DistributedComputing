@@ -42,30 +42,29 @@ To remove a docker image:
 docker rmi image-name
 ```
 
-## Installing Minikube and Kubectl
+## Installing Kubeadm
 Install kubectl:
 ```
-sudo apt-get update && sudo apt-get install -y apt-transport-https
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-sudo apt-get update
-sudo apt-get install -y kubectl
+apt-get update && apt-get install -y apt-transport-https curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+apt-get update
+apt-get install -y kubelet kubeadm kubectl
+apt-mark hold kubelet kubeadm kubectl
 ```
 
-Install Minikube:
-```
-curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.30.0/minikube-linux-amd64 && chmod +x minikube && sudo cp minikube /usr/local/bin/ && rm minikube
-```
 
 ## Using Kubernetes
-Start Minikube cluster:
+Start Kubeadm cluster:
 ```
-sudo minikube start
+sudo bash kubeadm_build.sh
 ```
 
-Stop Minikube:
+Stop Kubeadm:
 ```
-sudo minikube stop
+sudo kubeadm reset
 ```
 
 Create Deployment:
@@ -73,9 +72,9 @@ Create Deployment:
 sudo kubectl run hello-world --image=gcr.io/api-project-vision/hello-world --port=8080
 ```
 
-Expose Deployment (Create Service):
+Create Service:
 ```
-sudo kubectl expose deployment/hello-world --type="NodePort" --port 8080
+sudo kubectl expose deployment/hello-world --type="ClusterIP" --port 8080
 ```
 
 ## Testing Kubernetes
