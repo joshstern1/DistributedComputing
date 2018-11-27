@@ -49,7 +49,6 @@ class StartPage(tk.Frame):
 			tk.Button(user_popup, text = 'Create', command = new_user_function).grid(column = 1, row = 3, sticky = "ew")
 
 		def new_user_function(*args):
-			# print(password.get())
 			if password.get() == confirm_pass.get():
 				baseURL = 'http://' + IP_Add_Server + PORT
 				postURL = baseURL + '/new-user'
@@ -72,8 +71,7 @@ class StartPage(tk.Frame):
 			if check == None:
 				messagebox.showinfo("Wrong Password. Please try again")
 			else:
-				Upload.config(state = NORMAL)
-				Save.config(state = NORMAL)
+				controller.show_frame(UploadSelectionPage)
 
 		user_id = StringVar()
 		password = StringVar()
@@ -95,7 +93,25 @@ class StartPage(tk.Frame):
 		pass_entry = tk.Entry(self, width = 15, textvariable = password, show = "*")
 		pass_entry.grid(column = 1, row = 1, sticky = "ew")
 
-		tk.Button(self, text = 'Login', command = authenticate_user).grid(column = 2, row = 1, sticky = (E, W))
+		tk.Button(self, text = 'Login', command = authenticate_user).grid(column = 2, row = 1, sticky = "ew")
+
+class UploadSelectionPage(tk.Frame):
+	"""This page asks the user to upload new function or select from the existing one"""
+	def __init__(self, parent, controller):
+		tk.Frame.__init__(self, parent)
+
+		def browse_function(*args):
+			"""Code to open a browse pop up to select file to be uploaded"""
+			upload_fp.set(filedialog.askopenfilename(initialdir = "/", title = "Select File", filetypes = (("Python Files","*.py"),("CPP files","*.cpp"),("All files","*.*"))))
+
+		upload_fp = StringVar()
+		
+		tk.Label(self, text = 'Upload Function').grid(column = 0, row = 0, sticky = "w", columnspan = 2)
+		
+		tk.Button(self, text = 'Browse', command = browse_function).grid(column = 0, row = 1, sticky = "ew")
+		upload_fp_entry = tk.Entry(self, width = 15, textvariable = upload_fp).grid(column = 1, row = 1, sticky = "ew")
+		Upload = tk.Button(self, text = 'Upload', command = upload_function).grid(column = 2, row = 1, sticky = "ew")
+
 if __name__=='__main__':
 	app = ClientApp()
 	app.mainloop()
