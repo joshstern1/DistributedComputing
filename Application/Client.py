@@ -62,6 +62,19 @@ class StartPage(tk.Frame):
 			else:
 				messagebox.showinfo("Passwords don't match")
 
+		def authenticate_user(*args):
+			"""Add code to take the entry field data and 
+			authenticate with the server"""
+			baseURL = 'http://' + IP_Add_Server + PORT
+			postURL = baseURL + '/authenticate'
+			data = {'username': user_id.get(),'password': password.get()}
+			check = requests.post(url = postURL, data = data)
+			if check == None:
+				messagebox.showinfo("Wrong Password. Please try again")
+			else:
+				Upload.config(state = NORMAL)
+				Save.config(state = NORMAL)
+
 		user_id = StringVar()
 		password = StringVar()
 		confirm_pass = StringVar()
