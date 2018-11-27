@@ -46,7 +46,21 @@ class StartPage(tk.Frame):
 			tk.Entry(user_popup, width = 25, textvariable = user_id).grid(column = 1, row = 0, sticky = "ew")
 			tk.Entry(user_popup, width = 25, textvariable = password, show = "*").grid(column = 1, row = 1, sticky = "ew")
 			tk.Entry(user_popup, width = 25, textvariable = confirm_pass, show = "*").grid(column = 1, row = 2, sticky = "ew")
-			tk.Button(user_popup, text = 'Create', command = new_user_function).grid(column = 1, row = 3, sticky = "ew
+			tk.Button(user_popup, text = 'Create', command = new_user_function).grid(column = 1, row = 3, sticky = "ew")
+
+		def new_user_function(*args):
+			# print(password.get())
+			if password.get() == confirm_pass.get():
+				baseURL = 'http://' + IP_Add_Server + PORT
+				postURL = baseURL + '/new-user'
+				data = {'username': user_id.get(),'password': password.get()}
+				r = requests.post(url = postURL, data = data)
+				if r == False:
+					messagebox.showinfo("Invalid username!")
+				else:
+					messagebox.showinfo("Profile created!!")
+			else:
+				messagebox.showinfo("Passwords don't match")
 
 		user_id = StringVar()
 		password = StringVar()
