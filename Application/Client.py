@@ -28,6 +28,26 @@ class StartPage(tk.Frame):
 	def __init__(self, parent, controller):
 		tk.Frame.__init__(self, parent)
 
+		def red_text(event=None):
+		    new_user.config(foreground = "red")
+
+		def black_text(event=None):
+		    new_user.config(foreground = "black")
+
+		def new_user_function_popup(*args):
+			"""This will open a pop up window for adding new users"""
+			user_popup = Toplevel()
+			user_popup.title("Create New user")
+
+			tk.Label(user_popup, text = "Enter Email ID").grid(column = 0, row = 0, sticky = "e")
+			tk.Label(user_popup, text = "New Password").grid(column = 0, row = 1, sticky = "e")
+			tk.Label(user_popup, text = "Confirm Password").grid(column = 0, row = 2, sticky = "e")
+
+			tk.Entry(user_popup, width = 25, textvariable = user_id).grid(column = 1, row = 0, sticky = "ew")
+			tk.Entry(user_popup, width = 25, textvariable = password, show = "*").grid(column = 1, row = 1, sticky = "ew")
+			tk.Entry(user_popup, width = 25, textvariable = confirm_pass, show = "*").grid(column = 1, row = 2, sticky = "ew")
+			tk.Button(user_popup, text = 'Create', command = new_user_function).grid(column = 1, row = 3, sticky = "ew
+
 		user_id = StringVar()
 		password = StringVar()
 		confirm_pass = StringVar()
