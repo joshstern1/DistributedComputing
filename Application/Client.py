@@ -3,6 +3,10 @@ from tkinter import *
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
+import requests
+
+IP_Add_Server = "127.0.0.1"
+PORT = "5000"
 
 class ClientApp(tk.Tk):
 	"""This is the main application class"""
@@ -52,7 +56,7 @@ class StartPage(tk.Frame):
 
 		def new_user_function(*args):
 			if password.get() == confirm_pass.get():
-				baseURL = 'http://' + IP_Add_Server + PORT
+				baseURL = 'http://' + IP_Add_Server + ":" + PORT
 				postURL = baseURL + '/new-user'
 				data = {'username': user_id.get(),'password': password.get()}
 				r = requests.post(url = postURL, data = data)
@@ -63,17 +67,17 @@ class StartPage(tk.Frame):
 			else:
 				messagebox.showinfo("Passwords don't match")
 
-		# def authenticate_user(*args):
-		# 	"""Add code to take the entry field data and 
-		# 	authenticate with the server"""
-		# 	baseURL = 'http://' + IP_Add_Server + PORT
-		# 	postURL = baseURL + '/authenticate'
-		# 	data = {'username': user_id.get(),'password': password.get()}
-		# 	check = requests.post(url = postURL, data = data)
-		# 	if check == None:
-		# 		messagebox.showinfo("Wrong Password. Please try again")
-		# 	else:
-		# 		controller.show_frame(UploadSelectionPage)
+		def authenticate_user(*args):
+			"""Add code to take the entry field data and 
+			authenticate with the server"""
+			baseURL = 'http://' + IP_Add_Server + ":" + PORT
+			postURL = baseURL + '/authenticate'
+			data = {'username': user_id.get(),'password': password.get()}
+			check = requests.post(url = postURL, data = data)
+			if check == None:
+				messagebox.showinfo("Wrong Password. Please try again")
+			else:
+				controller.show_frame(UploadSelectionPage)
 
 		user_id = StringVar()
 		password = StringVar()
@@ -95,8 +99,8 @@ class StartPage(tk.Frame):
 		pass_entry = tk.Entry(self, width = 15, textvariable = password, show = "*")
 		pass_entry.grid(column = 1, row = 1, sticky = "ew")
 
-		# tk.Button(self, text = 'Login', command = authenticate_user).grid(column = 2, row = 1, sticky = "ew")
-		tk.Button(self, text = 'Login', command = lambda: controller.show_frame(UploadSelectionPage)).grid(column = 2, row = 1, sticky = "ew")
+		tk.Button(self, text = 'Login', command = authenticate_user).grid(column = 2, row = 1, sticky = "ew")
+		# tk.Button(self, text = 'Login', command = lambda: controller.show_frame(UploadSelectionPage)).grid(column = 2, row = 1, sticky = "ew")
 
 class UploadSelectionPage(tk.Frame):
 	"""This page asks the user to upload new function or select from the existing one"""
