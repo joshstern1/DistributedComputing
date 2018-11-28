@@ -2,6 +2,7 @@
 from tkinter import *
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import filedialog
 
 class ClientApp(tk.Tk):
 	"""This is the main application class"""
@@ -14,9 +15,10 @@ class ClientApp(tk.Tk):
 		container.grid_columnconfigure(0, weight =1)
 		
 		self.frames = {}
-		frame = StartPage(container,self)
-		self.frames[StartPage] = frame
-		frame.grid(row = 0, column = 0, sticky = "nsew")
+		for F in (StartPage, UploadSelectionPage):
+			frame = F(container,self)
+			self.frames[F] = frame
+			frame.grid(row = 0, column = 0, sticky = "nsew")
 		self.show_frame(StartPage)
 
 	def show_frame(self, container):
@@ -61,17 +63,17 @@ class StartPage(tk.Frame):
 			else:
 				messagebox.showinfo("Passwords don't match")
 
-		def authenticate_user(*args):
-			"""Add code to take the entry field data and 
-			authenticate with the server"""
-			baseURL = 'http://' + IP_Add_Server + PORT
-			postURL = baseURL + '/authenticate'
-			data = {'username': user_id.get(),'password': password.get()}
-			check = requests.post(url = postURL, data = data)
-			if check == None:
-				messagebox.showinfo("Wrong Password. Please try again")
-			else:
-				controller.show_frame(UploadSelectionPage)
+		# def authenticate_user(*args):
+		# 	"""Add code to take the entry field data and 
+		# 	authenticate with the server"""
+		# 	baseURL = 'http://' + IP_Add_Server + PORT
+		# 	postURL = baseURL + '/authenticate'
+		# 	data = {'username': user_id.get(),'password': password.get()}
+		# 	check = requests.post(url = postURL, data = data)
+		# 	if check == None:
+		# 		messagebox.showinfo("Wrong Password. Please try again")
+		# 	else:
+		# 		controller.show_frame(UploadSelectionPage)
 
 		user_id = StringVar()
 		password = StringVar()
@@ -93,7 +95,8 @@ class StartPage(tk.Frame):
 		pass_entry = tk.Entry(self, width = 15, textvariable = password, show = "*")
 		pass_entry.grid(column = 1, row = 1, sticky = "ew")
 
-		tk.Button(self, text = 'Login', command = authenticate_user).grid(column = 2, row = 1, sticky = "ew")
+		# tk.Button(self, text = 'Login', command = authenticate_user).grid(column = 2, row = 1, sticky = "ew")
+		tk.Button(self, text = 'Login', command = lambda: controller.show_frame(UploadSelectionPage)).grid(column = 2, row = 1, sticky = "ew")
 
 class UploadSelectionPage(tk.Frame):
 	"""This page asks the user to upload new function or select from the existing one"""
@@ -104,6 +107,10 @@ class UploadSelectionPage(tk.Frame):
 			"""Code to open a browse pop up to select file to be uploaded"""
 			upload_fp.set(filedialog.askopenfilename(initialdir = "/", title = "Select File", filetypes = (("Python Files","*.py"),("CPP files","*.cpp"),("All files","*.*"))))
 
+		def upload_function(*args):
+			"""Add code to upload the given file to the server"""
+			pass
+
 		upload_fp = StringVar()
 		
 		tk.Label(self, text = 'Upload Function').grid(column = 0, row = 0, sticky = "w", columnspan = 2)
@@ -111,6 +118,8 @@ class UploadSelectionPage(tk.Frame):
 		tk.Button(self, text = 'Browse', command = browse_function).grid(column = 0, row = 1, sticky = "ew")
 		upload_fp_entry = tk.Entry(self, width = 15, textvariable = upload_fp).grid(column = 1, row = 1, sticky = "ew")
 		Upload = tk.Button(self, text = 'Upload', command = upload_function).grid(column = 2, row = 1, sticky = "ew")
+
+		tk.Label(self, text = "Or select one of the following").grid(column = 0, row = 2, sticky = "ew", columnspan = 2)
 
 if __name__=='__main__':
 	app = ClientApp()
