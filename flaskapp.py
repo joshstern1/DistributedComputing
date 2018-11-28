@@ -44,7 +44,7 @@ def hello(name="You"):
 def closing():
 	myDB.close_connection()
 
-atexit(closing)
+atexit.register(closing)
 
 if __name__=='__main__':
 	app.run()
