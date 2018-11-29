@@ -59,7 +59,9 @@ class StartPage(tk.Frame):
 				baseURL = 'http://' + IP_Add_Server + ":" + PORT
 				postURL = baseURL + '/new-user'
 				data = {'username': user_id.get(),'password': password.get()}
-				r = requests.post(url = postURL, data = data)
+				r = requests.put(url=postURL, data=data)
+				print(r.url)
+				print(r)
 				if r == False:
 					messagebox.showinfo("Invalid username!")
 				else:
@@ -72,9 +74,12 @@ class StartPage(tk.Frame):
 			authenticate with the server"""
 			baseURL = 'http://' + IP_Add_Server + ":" + PORT
 			postURL = baseURL + '/authenticate'
+			print(postURL)
 			data = {'username': user_id.get(),'password': password.get()}
 			check = requests.post(url = postURL, data = data)
-			if check == None:
+			print(check.url)
+			print(check)
+			if check == False:
 				messagebox.showinfo("Wrong Password. Please try again")
 			else:
 				controller.show_frame(UploadSelectionPage)
