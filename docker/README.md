@@ -81,3 +81,17 @@ sudo kubectl expose deployment/hello-world --type="ClusterIP" --port 8080
 ```
 python client.py
 ```
+
+## Worker Node
+To serve as a worker node, install open-ssh 
+```
+sudo apt install openssh-server
+```
+The ssh server will begin start up automatically following installation. To stop the server, run:
+```
+sudo systemctl stop ssh
+```
+To startup the server again:
+```
+sudo systemctl start ssh
+```
