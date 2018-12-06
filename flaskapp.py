@@ -1,4 +1,4 @@
-from flask import Flask, Response, send_file, render_template, request, session, make_response, redirect, url_for, flash, g
+from flask import Flask, Response, send_file, render_template, request, session, make_response, redirect, url_for, flash, g, jsonify
 import sys
 import atexit
 
@@ -26,20 +26,39 @@ def adduser():
 	if request.method == 'POST':
 		ID = request.form['username']
 		Pswd = request.form['password']
-		return Response(myDB.add_new_user(ID, Pswd))
+		resp = myDB.add_new_user(ID, Pswd)
+		if resp == False:
+			return jsonify(resp)
+		else:
+			return jsonify(True)
 	else:
-		return Response('Wrong method', mimetype = 'text/plain')
-
+		return 'Wrong method'
+#    return Response("working on new user block\n", mimetype = 'text/plain')
 # To check the credentials
 @flask_app.route('/authenticate', methods = ['POST'])
 def checkuser():
 	if request.method == 'POST':
 		ID = request.form['username']
 		Pswd = request.form['password']
-		# print(myDB.login_user(ID,Pswd))
-		return Response(myDB.login_user(ID, Pswd))
+		resp = myDB.login_user(ID,Pswd)
+		if resp == False:
+			return jsonify(resp)
+		else:
+			return jsonify(True)
 	else:
 		return Response('Wrong method \n', mimetype = 'text/plain')
+
+@flask_app.route('/upload', methods = ['POST'])
+def upload():
+	if request.method == 'POST':
+		if resp == False:
+			"""Return 404 response"""
+			pass
+		else:
+			filename = request.form['file_name']
+			file = request.form['file']
+			up = myDB.add_executable(resp, filename, file)
+			return jsonify(True)
 
 @flask_app.route('/hello')
 def hello(name="You"):
