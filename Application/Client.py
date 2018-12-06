@@ -59,10 +59,8 @@ class StartPage(tk.Frame):
 				baseURL = 'http://' + IP_Add_Server + ":" + PORT
 				postURL = baseURL + '/new-user'
 				data = {'username': user_id.get(),'password': password.get()}
-				r = requests.put(url=postURL, data=data)
-				print(r.url)
-				print(r)
-				if r == False:
+				r = requests.post(url=postURL, data=data)
+				if r.json() == False:
 					messagebox.showinfo("Invalid username!")
 				else:
 					messagebox.showinfo("Profile created!!")
@@ -77,9 +75,7 @@ class StartPage(tk.Frame):
 			print(postURL)
 			data = {'username': user_id.get(),'password': password.get()}
 			check = requests.post(url = postURL, data = data)
-			print(check.url)
-			print(check)
-			if check == False:
+			if check.json() == False:
 				messagebox.showinfo("Wrong Password. Please try again")
 			else:
 				controller.show_frame(UploadSelectionPage)
@@ -116,9 +112,25 @@ class UploadSelectionPage(tk.Frame):
 			"""Code to open a browse pop up to select file to be uploaded"""
 			upload_fp.set(filedialog.askopenfilename(initialdir = "/", title = "Select File", filetypes = (("Python Files","*.py"),("CPP files","*.cpp"),("All files","*.*"))))
 
+		def read_file(path):
+			try:
+				with open(path, 'rb') as f:
+					data = f.read()
+					return data
+			except:
+				print("File could not be read")
+
 		def upload_function(*args):
 			"""Add code to upload the given file to the server"""
-			pass
+			baseURL = 'http://' + IP_Add_Server + ":" + PORT
+			postURL = baseURL + '/upload'
+			filename = upload_fp.get().split('/')
+			data = {'file_name': filename[-1], 'file' : read_file(upload_fp.get())}
+			r = response.post(url = postURL, data = data)
+			if r.json() == True:
+				messagebox.showinfo("File successfully uploaded!")
+			else:
+				messagebox.showinfo("Could not upload file")
 
 		upload_fp = StringVar()
 		
