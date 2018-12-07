@@ -3,6 +3,7 @@ from tkinter import *
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
+from tkinter import ttk
 import requests
 
 IP_Add_Server = "127.0.0.1"
@@ -67,6 +68,13 @@ class StartPage(tk.Frame):
 			else:
 				messagebox.showinfo("Passwords don't match")
 
+		def get_all_executables(*args):
+			"""Code for getting the list of the executables available for a user"""
+			baseURL = 'http://' + IP_Add_Server + ":" + PORT
+			getURL = baseURL + '/get-executables'
+			r = requests.get(url = getURL)
+			return r.json()
+
 		def authenticate_user(*args):
 			"""Add code to take the entry field data and 
 			authenticate with the server"""
@@ -78,11 +86,18 @@ class StartPage(tk.Frame):
 			if check.json() == False:
 				messagebox.showinfo("Wrong Password. Please try again")
 			else:
+				executables = get_all_executables()
+				file_list = []
+				for index, executable in enumerate(executables):
+					file_list.append(executable[index][0])
 				controller.show_frame(UploadSelectionPage)
+
 
 		user_id = StringVar()
 		password = StringVar()
 		confirm_pass = StringVar()
+		executables = []
+
 		
 		new_user = tk.Label(self, text = 'New User?')
 		
@@ -125,22 +140,32 @@ class UploadSelectionPage(tk.Frame):
 			baseURL = 'http://' + IP_Add_Server + ":" + PORT
 			postURL = baseURL + '/upload'
 			filename = upload_fp.get().split('/')
-			data = {'file_name': filename[-1], 'file' : read_file(upload_fp.get())}
-			r = response.post(url = postURL, data = data)
-			if r.json() == True:
+			fl = read_file(upload_fp.get())
+			# print(fl)
+			data = {'file_name': filename[-1], 'file' : fl}
+			# print(data)
+			r = requests.post(url = postURL, data = data)
+			# print(r.json())
+			if r.json() is True:
 				messagebox.showinfo("File successfully uploaded!")
 			else:
 				messagebox.showinfo("Could not upload file")
 
+		def newselection():
+			pass
+
 		upload_fp = StringVar()
-		
+		filelist_value = StringVar()
 		tk.Label(self, text = 'Upload Function').grid(column = 0, row = 0, sticky = "w", columnspan = 2)
-		
+
 		tk.Button(self, text = 'Browse', command = browse_function).grid(column = 0, row = 1, sticky = "ew")
 		upload_fp_entry = tk.Entry(self, width = 15, textvariable = upload_fp).grid(column = 1, row = 1, sticky = "ew")
 		Upload = tk.Button(self, text = 'Upload', command = upload_function).grid(column = 2, row = 1, sticky = "ew")
 
 		tk.Label(self, text = "Or select one of the following").grid(column = 0, row = 2, sticky = "ew", columnspan = 2)
+		filelist = ttk.Combobox(self, textvariable = filelist_value).grid(column = 0, row = 3, sticky = "ew", columnspan = 2)
+		filelist['values'] = file_list
+		
 
 if __name__=='__main__':
 	app = ClientApp()
