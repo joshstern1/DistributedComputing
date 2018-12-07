@@ -5,8 +5,10 @@ import atexit
 sys.path.append("./database")
 from MyDB import MyDB
 myDB = MyDB()
-
 flask_app = Flask('flaskapp')
+# captain: UserID
+flask_app.secret_key = 'thisisatest'
+session = {'UserID': 0}
 
 @flask_app.route('/')
 def main():
@@ -30,6 +32,7 @@ def adduser():
 		if resp == False:
 			return jsonify(resp)
 		else:
+			session['UserID'] = int(resp)
 			return jsonify(True)
 	else:
 		return 'Wrong method'
@@ -44,6 +47,9 @@ def checkuser():
 		if resp == False:
 			return jsonify(resp)
 		else:
+			session['UserID'] = int(resp)
+			print(session.get('UserID'))
+			print(resp)
 			return jsonify(True)
 	else:
 		return Response('Wrong method \n', mimetype = 'text/plain')
@@ -51,14 +57,20 @@ def checkuser():
 @flask_app.route('/upload', methods = ['POST'])
 def upload():
 	if request.method == 'POST':
-		if resp == False:
-			"""Return 404 response"""
-			pass
-		else:
-			filename = request.form['file_name']
-			file = request.form['file']
-			up = myDB.add_executable(resp, filename, file)
-			return jsonify(True)
+		filename = request.form['file_name']
+		file = request.form['file'].encode()
+		# print(file)
+		print(session.get('UserID'))
+		up = myDB.add_executable(session.get('UserID'), filename, file)
+		return jsonify(True)
+
+@flask_app.route('/get-executables', methods = ['GET'])
+def get_filenames():
+	if request.method == 'GET':
+		file_list = myDB.get_users_executables(session.get('UserID'))
+		# return file_list
+		# print(file_list)
+		return jsonify(file_list)
 
 @flask_app.route('/hello')
 def hello(name="You"):
