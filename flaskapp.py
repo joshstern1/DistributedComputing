@@ -1,20 +1,26 @@
-from flask import Flask, Response, send_file, render_template, request, session, make_response, redirect, url_for, flash, g
+from flask import Flask, Response, send_file, render_template, request, session, make_response, redirect, url_for, flash, g, jsonify
 import sys
 import atexit
+
+sys.path.append("./docker")
+import client
 
 sys.path.append("./database")
 from MyDB import MyDB
 myDB = MyDB()
 
 flask_app = Flask('flaskapp')
+# captain: UserID
+flask_app.secret_key = 'thisisatest'
+session = {'UserID': 0}
 
 @flask_app.route('/')
 def main():
-    return  render_template('main.html')
+    return render_template('main.html')
 
 @flask_app.route('/downloads')
 def downloads():
-    return  render_template('downloads.html')
+    return render_template('downloads.html')
 
 @flask_app.route('/return-file')
 def return_file():
@@ -23,16 +29,52 @@ def return_file():
 # To add new user in the database
 @flask_app.route('/new-user', methods = ['POST'])
 def adduser():
-	ID = request.form['username']
-	Pswd = request.form['password']
-	return myDB.add_new_user(ID, Pswd)
-
+	if request.method == 'POST':
+		ID = request.form['username']
+		Pswd = request.form['password']
+		resp = myDB.add_new_user(ID, Pswd)
+		if resp == False:
+			return jsonify(resp)
+		else:
+			session['UserID'] = int(resp)
+			return jsonify(True)
+	else:
+		return 'Wrong method'
+#    return Response("working on new user block\n", mimetype = 'text/plain')
 # To check the credentials
-@flask_app.route('/authenticate', methods = ['GET'])
+@flask_app.route('/authenticate', methods = ['POST'])
 def checkuser():
-	ID = request.form['username']
-	Pswd = request.form['password']
-	return myDB.login_user(ID, Pswd)
+	if request.method == 'POST':
+		ID = request.form['username']
+		Pswd = request.form['password']
+		resp = myDB.login_user(ID,Pswd)
+		if resp == False:
+			return jsonify(resp)
+		else:
+			session['UserID'] = int(resp)
+			print(session.get('UserID'))
+			print(resp)
+			return jsonify(True)
+	else:
+		return Response('Wrong method \n', mimetype = 'text/plain')
+
+@flask_app.route('/upload', methods = ['POST'])
+def upload():
+	if request.method == 'POST':
+		filename = request.form['file_name']
+		file = request.form['file'].encode()
+		# print(file)
+		print(session.get('UserID'))
+		up = myDB.add_executable(session.get('UserID'), filename, file)
+		return jsonify(True)
+
+@flask_app.route('/get-executables', methods = ['GET'])
+def get_filenames():
+	if request.method == 'GET':
+		file_list = myDB.get_users_executables(session.get('UserID'))
+		# return file_list
+		# print(file_list)
+		return jsonify(file_list)
 
 @flask_app.route('/hello')
 def hello(name="You"):
@@ -44,7 +86,7 @@ def hello(name="You"):
 def closing():
 	myDB.close_connection()
 
-atexit(closing)
+atexit.register(closing)
 
 if __name__=='__main__':
 	app.run()
