@@ -8,7 +8,8 @@ import requests
 
 IP_Add_Server = "127.0.0.1"
 PORT = "5000"
-
+executables = []
+file_list = ['None']
 class ClientApp(tk.Tk):
 	"""This is the main application class"""
 	def __init__(self, *args, **kwargs):
@@ -87,18 +88,16 @@ class StartPage(tk.Frame):
 				messagebox.showinfo("Wrong Password. Please try again")
 			else:
 				executables = get_all_executables()
-				file_list = []
-				for index, executable in enumerate(executables):
-					file_list.append(executable[index][0])
+				file_list.remove('None')
+				for executable in executables:
+					file_list.append(executable[0])
 				controller.show_frame(UploadSelectionPage)
 
 
 		user_id = StringVar()
 		password = StringVar()
 		confirm_pass = StringVar()
-		executables = []
 
-		
 		new_user = tk.Label(self, text = 'New User?')
 		
 		new_user.grid(column = 2, row = 0, sticky = "ew")
@@ -151,7 +150,10 @@ class UploadSelectionPage(tk.Frame):
 			else:
 				messagebox.showinfo("Could not upload file")
 
-		def newselection():
+		def update_list():
+			filelist['values'] = file_list
+
+		def selection():
 			pass
 
 		upload_fp = StringVar()
@@ -160,12 +162,15 @@ class UploadSelectionPage(tk.Frame):
 
 		tk.Button(self, text = 'Browse', command = browse_function).grid(column = 0, row = 1, sticky = "ew")
 		upload_fp_entry = tk.Entry(self, width = 15, textvariable = upload_fp).grid(column = 1, row = 1, sticky = "ew")
-		Upload = tk.Button(self, text = 'Upload', command = upload_function).grid(column = 2, row = 1, sticky = "ew")
+		Upload = tk.Button(self, text = 'Upload & Run', command = upload_function).grid(column = 2, row = 1, sticky = "ew")
 
 		tk.Label(self, text = "Or select one of the following").grid(column = 0, row = 2, sticky = "ew", columnspan = 2)
-		filelist = ttk.Combobox(self, textvariable = filelist_value).grid(column = 0, row = 3, sticky = "ew", columnspan = 2)
-		filelist['values'] = file_list
-		
+
+		filelist = ttk.Combobox(self, textvariable = filelist_value, postcommand = update_list)
+		filelist.grid(column = 0, row = 3, sticky = "ew", columnspan = 2)
+
+		tk.Button(self, text = 'Run', command = selection).grid(column = 2, row = 3, sticky = "ew")
+	
 
 if __name__=='__main__':
 	app = ClientApp()
