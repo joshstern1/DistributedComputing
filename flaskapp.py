@@ -2,9 +2,13 @@ from flask import Flask, Response, send_file, render_template, request, session,
 import sys
 import atexit
 
+sys.path.append("./docker")
+import client
+
 sys.path.append("./database")
 from MyDB import MyDB
 myDB = MyDB()
+
 flask_app = Flask('flaskapp')
 # captain: UserID
 flask_app.secret_key = 'thisisatest'
