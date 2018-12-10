@@ -10,7 +10,7 @@ The next thing to install is MySQL Workbench which is a tool to help configure M
 MySQL workbench can be installed from https://dev.mysql.com/downloads/workbench/
 
 ## Installing Python packages
-The first package is the mysql.connector library this can be done by just running "python -m pip install mysql-connector" in cmd.
+The first package is the mysql.connector library this can be done by just running "python -m pip install mysql-connector" in cmd. If you are attempting this on a unix based system it may be necessary to run "python3 -m pip install mysql-connector".
 The second package which is only needed if it was not downloaded with the MySQL server. If you are encountering a "connector.connect" not defined you may need to intall this which can be done at https://dev.mysql.com/downloads/connector/python/ the applicable python 3.6 version should be installed.
 
 ## Creating a database on the MySQL server
