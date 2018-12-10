@@ -63,17 +63,26 @@ def upload():
 	if request.method == 'POST':
 		filename = request.form['file_name']
 		file = request.form['file'].encode()
-		# print(file)
-		print(session.get('UserID'))
 		up = myDB.add_executable(session.get('UserID'), filename, file)
-		return jsonify(True)
+		result = Client.main(file)
+		data = {'Flag': True, 'result': result}
+		myDB.set_result(up, result)
+		return jsonify(data)
+
+@flask_app.route('/run', methods = ['POST'])
+def run():
+	if request.method == 'POST':
+		exec_id = request.form['exec_id']
+		file = myDB.get_executable(exec_id)
+		result = Client.main(file)
+		data = {'Flag': True, 'result': result}
+		myDB.set_result(exec_id, result)
+		return jsonify(data)
 
 @flask_app.route('/get-executables', methods = ['GET'])
 def get_filenames():
 	if request.method == 'GET':
 		file_list = myDB.get_users_executables(session.get('UserID'))
-		# return file_list
-		# print(file_list)
 		return jsonify(file_list)
 
 @flask_app.route('/hello')
@@ -89,4 +98,4 @@ def closing():
 atexit.register(closing)
 
 if __name__=='__main__':
-	app.run()
+	app.run(threaded=True)
