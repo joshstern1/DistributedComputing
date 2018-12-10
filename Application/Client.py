@@ -9,7 +9,8 @@ import requests
 IP_Add_Server = "127.0.0.1"
 PORT = "5000"
 executables = []
-file_list = ['None']
+file_list = []
+result = ""
 class ClientApp(tk.Tk):
 	"""This is the main application class"""
 	def __init__(self, *args, **kwargs):
@@ -88,7 +89,7 @@ class StartPage(tk.Frame):
 				messagebox.showinfo("Wrong Password. Please try again")
 			else:
 				executables = get_all_executables()
-				file_list.remove('None')
+				# file_list.remove('None')
 				for executable in executables:
 					file_list.append(executable[0])
 				controller.show_frame(UploadSelectionPage)
@@ -140,12 +141,11 @@ class UploadSelectionPage(tk.Frame):
 			postURL = baseURL + '/upload'
 			filename = upload_fp.get().split('/')
 			fl = read_file(upload_fp.get())
-			# print(fl)
 			data = {'file_name': filename[-1], 'file' : fl}
-			# print(data)
 			r = requests.post(url = postURL, data = data)
-			# print(r.json())
-			if r.json() is True:
+			if r.json().get('Flag') is True:
+				result = r.json().get('result')
+				controller.show_frame(SavePage)
 				messagebox.showinfo("File successfully uploaded!")
 			else:
 				messagebox.showinfo("Could not upload file")
@@ -154,7 +154,18 @@ class UploadSelectionPage(tk.Frame):
 			filelist['values'] = file_list
 
 		def selection():
-			pass
+			for executable in executables:
+				if filelist_value.get() is executable[0]:
+					baseURL = 'http://' + IP_Add_Server + ":" + PORT
+					postURL = baseURL + '/run'
+					data = {'exec_id':executable[1]}
+					r = requests.post(url = postURL, data = data)
+					if r.json().get('Flag') is True:
+						result = r.json().get('result')
+						controller.show_frame(SavePage)
+						messagebox.showinfo("Running the file now..")
+					else:
+						messagebox.showinfo("Could not run file")
 
 		upload_fp = StringVar()
 		filelist_value = StringVar()
@@ -170,7 +181,26 @@ class UploadSelectionPage(tk.Frame):
 		filelist.grid(column = 0, row = 3, sticky = "ew", columnspan = 2)
 
 		tk.Button(self, text = 'Run', command = selection).grid(column = 2, row = 3, sticky = "ew")
-	
+
+class SavePage(tk.Frame):
+	"""This page asks the user to upload new function or select from the existing one"""
+	def __init__(self, parent, controller):
+		tk.Frame.__init__(self, parent)
+		
+		def save_results():
+			try:
+				with open(save_fp.get(), 'wb') as f:
+					f.write(result)
+			except Exception as e:
+				print("write_file error")	
+		
+		save_fp = StringVar()
+		tk.Label(self, text = 'Result Directory').grid(column = 0, row = 0, sticky = "w", columnspan = 2)
+		tk.Button(self, text = 'Browse', command = browse_destination).grid(column = 0, row = 1, sticky = "ew")
+
+		save_fp_entry = tk.Entry(self, width = 15, textvariable = save_fp)
+		save_fp_entry.grid(column = 1, row = 5, sticky = "ew")
+		Save = tk.Button(self, text = 'Save', command = save_results).grid(column = 2, row = 5, sticky = "ew")
 
 if __name__=='__main__':
 	app = ClientApp()
