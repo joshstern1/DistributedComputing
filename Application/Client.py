@@ -154,6 +154,7 @@ class UploadSelectionPage(tk.Frame):
 			filelist['values'] = file_list
 
 		def selection():
+			"""Code to execute when run button is pressed"""
 			for executable in executables:
 				if filelist_value.get() is executable[0]:
 					baseURL = 'http://' + IP_Add_Server + ":" + PORT
