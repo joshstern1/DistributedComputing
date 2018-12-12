@@ -14,18 +14,6 @@ flask_app = Flask('flaskapp')
 flask_app.secret_key = 'thisisatest'
 session = {'UserID': 0}
 
-@flask_app.route('/')
-def main():
-    return render_template('main.html')
-
-@flask_app.route('/downloads')
-def downloads():
-    return render_template('downloads.html')
-
-@flask_app.route('/return-file')
-def return_file():
-    return send_file('helloworld.c', attachment_filename='hello.c')
-
 # To add new user in the database
 @flask_app.route('/new-user', methods = ['POST'])
 def adduser():
@@ -84,13 +72,6 @@ def get_filenames():
 	if request.method == 'GET':
 		file_list = myDB.get_users_executables(session.get('UserID'))
 		return jsonify(file_list)
-
-@flask_app.route('/hello')
-def hello(name="You"):
-    return Response(
-        'Josh the goat and ' + name + ' a straight bum!\n',
-        mimetype='text/plain'
-    )
 
 def closing():
 	myDB.close_connection()
