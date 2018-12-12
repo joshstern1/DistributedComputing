@@ -22,7 +22,7 @@ class ClientApp(tk.Tk):
 		container.grid_columnconfigure(0, weight =1)
 		
 		self.frames = {}
-		for F in (StartPage, UploadSelectionPage):
+		for F in (StartPage, UploadSelectionPage, SavePage):
 			frame = F(container,self)
 			self.frames[F] = frame
 			frame.grid(row = 0, column = 0, sticky = "nsew")
@@ -187,6 +187,10 @@ class SavePage(tk.Frame):
 	def __init__(self, parent, controller):
 		tk.Frame.__init__(self, parent)
 		
+		def browse_destination(*args):
+			"""Code to open browse pop up to select destination folder"""
+			save_fp.set(filedialog.askdirectory())
+
 		def save_results():
 			try:
 				with open(save_fp.get(), 'wb') as f:
@@ -199,8 +203,8 @@ class SavePage(tk.Frame):
 		tk.Button(self, text = 'Browse', command = browse_destination).grid(column = 0, row = 1, sticky = "ew")
 
 		save_fp_entry = tk.Entry(self, width = 15, textvariable = save_fp)
-		save_fp_entry.grid(column = 1, row = 5, sticky = "ew")
-		Save = tk.Button(self, text = 'Save', command = save_results).grid(column = 2, row = 5, sticky = "ew")
+		save_fp_entry.grid(column = 1, row = 1, sticky = "ew")
+		Save = tk.Button(self, text = 'Save', command = save_results).grid(column = 2, row = 1, sticky = "ew")
 
 if __name__=='__main__':
 	app = ClientApp()
