@@ -1,5 +1,7 @@
 import requests
 import os
+import sys
+import time
 #used to simulate the master server, which acts as a client when communicating with docker containers on worker nodes
 #sends a post request to a docker container containing a function to be run, then receive and print the function output
 
@@ -24,18 +26,39 @@ def shutdown():
     cmd = "python delete_app.py"
     os.system('echo %s|sudo -S %s' % (sudoPassword, cmd))
 
-def main():
+def main(file_to_run):
     url = startup()
-    #print(url)
-    #url = "http://192.168.0.1:31763"
-    fin = open('testing.py', 'r')
-    files = {'file': fin}
+    #url = "http://localhost:8080"
+    print(url)
+    print("")
+
+    #to send a zip file:
+    #fin = open('work.zip', 'rb')
+
+    #to send a file:
+    #fin = open('testing.py', 'r')
+    #files = {'file': fin}
+
     try:
-      r = requests.post(url, files=files)
-      print (r.text)
+        data = {'file' : file_to_run}
+        r = requests.post(url, data = data)
+
+        #to send a zip file
+        #r = requests.post(url = post_url, data = {"mysubmit":"Go"}, files={"archive": ("work.zip", fin)})
+
+        #to send a file:
+        #r = requests.post(url, files=files)
+        print (r.text)
     finally:
-        fin.close()
+        #fin.close()
+        print("")
     shutdown()
 
-if __name__ == '__main__':
-    main()
+'''
+text = ""
+small_words = open(sys.argv[1]).read().splitlines()
+for line in small_words:
+    text = text + line
+    text += "\n"
+main(text)
+'''
