@@ -89,6 +89,7 @@ class StartPage(tk.Frame):
 			if check.json() == False:
 				messagebox.showinfo("Wrong Password. Please try again")
 			else:
+				global executables
 				executables = get_all_executables()
 				# file_list.remove('None')
 				for executable in executables:
@@ -145,6 +146,7 @@ class UploadSelectionPage(tk.Frame):
 			data = {'file_name': filename[-1], 'file' : fl}
 			r = requests.post(url = postURL, data = data)
 			if r.json().get('Flag') is True:
+				global result
 				result = r.json().get('result')
 				controller.show_frame(SavePage)
 				messagebox.showinfo("File successfully uploaded!")
@@ -156,14 +158,22 @@ class UploadSelectionPage(tk.Frame):
 
 		def selection():
 			"""Code to execute when run button is pressed"""
+			# print ("in the run button function")
+			file = filelist_value.get()
+			# print(type(file))
+			global executables
+			# print(executables)
 			for executable in executables:
-				if filelist_value.get() is executable[0]:
+				print(executable)
+				if file == executable[0]:
 					baseURL = 'http://' + IP_Add_Server + ":" + PORT
 					postURL = baseURL + '/run'
 					data = {'exec_id':executable[1]}
 					r = requests.post(url = postURL, data = data)
 					if r.json().get('Flag') is True:
+						global result
 						result = r.json().get('result')
+						print(result)
 						controller.show_frame(SavePage)
 						messagebox.showinfo("Running the file now..")
 					else:
@@ -194,11 +204,12 @@ class SavePage(tk.Frame):
 			save_fp.set(filedialog.askdirectory())
 
 		def save_results():
+			global result
 			try:
 				with open(save_fp.get(), 'wb') as f:
-					f.write(result)
+					f.write(result.encode())
 			except Exception as e:
-				print("write_file error")	
+				print(e)
 		
 		save_fp = StringVar()
 		tk.Label(self, text = 'Result Directory').grid(column = 0, row = 0, sticky = "w", columnspan = 2)
