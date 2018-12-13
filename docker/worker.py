@@ -12,7 +12,51 @@ userfunc = None
 def hello():
     if request.method == "POST": #if a file is uploaded
 
-        #get uploaded file from client (master server)
+        #how to handle executables:
+
+        f1 = open("run_me", "w")
+        files = request.form['file']
+        for line in files:
+            f1.write(line)
+        f1.close()
+        os.system("chmod 777 run_me")
+        os.system("python3 run_me > output.txt")
+        with open('output.txt', 'r') as f:
+            file_content = f.read()
+        os.system("rm output.txt")
+        os.system("rm run_me")
+        return file_content
+
+        '''
+        #how to handle zip files:
+
+        file = request.files['archive']
+
+        #save the file into the local directory
+        file.save(secure_filename(file.filename))
+        cmd = "unzip " + file.filename
+        os.system(cmd)
+
+        os.system("mv work/* .")
+        os.system("touch output.txt")
+        instructions = open("instructions.txt").read().splitlines()
+        for line in instructions:
+            cmd = line + " >> output.txt"
+            os.system(cmd)
+
+        with open('output.txt', 'r') as f:
+            file_content = f.read()
+        os.system("rm output.txt")
+        os.system("rm instructions.txt")
+        os.system("rm -r work")
+        os.system("rm work.zip")
+        return file_content
+        '''
+
+
+        '''
+        #how to handle a python file:
+        
         file = request.files['file']
 
         #save the file into the local directory
@@ -27,6 +71,10 @@ def hello():
             file_content = f.read()
         return file_content
 
+
+        '''
+
     return "The post did not work"
+
 
 app.run(host='0.0.0.0', port=8080)
