@@ -2,6 +2,7 @@ import os
 import time
 try:
 
+    #start up a kubernetes deployment, expose it to the cluster, and store the ip address of the service
     os.system("kubectl run hello-demo --image=gcr.io/api-project-vision/hello-demo --port=8080")
     time.sleep(5)
     os.system('kubectl expose deployment/hello-demo --type="ClusterIP" --port 8080')
