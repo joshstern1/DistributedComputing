@@ -3,7 +3,6 @@ import time
 try:
     
     #delete the kubernetes service and deployment after a function is completed
-    time.sleep(3)
     cmd = "kubectl delete service hello-demo"
     os.system(cmd)
     cmd = "kubectl delete deployment hello-demo"
