@@ -40,6 +40,7 @@ def main(file_to_run):
     #files = {'file': fin}
 
     try:
+        #to send an executable
         data = {'file' : file_to_run}
         r = requests.post(url, data = data)
 
@@ -48,17 +49,22 @@ def main(file_to_run):
 
         #to send a file:
         #r = requests.post(url, files=files)
-        print (r.text)
+        res = ""
+        while True:
+            res = r.text
+            if len(res) > 0:
+                break
+
+        print (res)
     finally:
         #fin.close()
         print("")
     shutdown()
 
-'''
+
 text = ""
 small_words = open(sys.argv[1]).read().splitlines()
 for line in small_words:
     text = text + line
     text += "\n"
 main(text)
-'''
