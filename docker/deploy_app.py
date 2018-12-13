@@ -2,13 +2,12 @@ import os
 import time
 try:
 
-    #os.system("docker build -t hello-world .")
-    os.system("kubectl run hello-world --image=gcr.io/api-project-vision/hello-world --port=8080")
+    os.system("kubectl run hello-demo --image=gcr.io/api-project-vision/hello-demo --port=8080")
     time.sleep(5)
-    os.system('kubectl expose deployment/hello-world --type="ClusterIP" --port 8080')
+    os.system('kubectl expose deployment/hello-demo --type="ClusterIP" --port 8080')
     time.sleep(5)
 
-    os.system("sudo kubectl get services/hello-world -o go-template='{{(index .spec.clusterIP)}}' > out1.txt")
+    os.system("sudo kubectl get services/hello-demo -o go-template='{{(index .spec.clusterIP)}}' > out1.txt")
 
 
 except:
