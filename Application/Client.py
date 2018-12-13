@@ -7,7 +7,7 @@ from tkinter import ttk
 import requests
 
 IP_Add_Server = "155.41.108.208"
-IP_Add_Server = "155.41.38.196"
+# IP_Add_Server = "155.41.38.196"
 PORT = "5000"
 executables = []
 file_list = []
