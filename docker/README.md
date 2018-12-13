@@ -95,3 +95,5 @@ To startup the server again:
 ```
 sudo systemctl start ssh
 ```
+
+To add a node from the master server, ssh into that node and run join.sh
