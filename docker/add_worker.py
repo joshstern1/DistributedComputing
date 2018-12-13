@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import os
+
+#used by kubeadm_build.sh to create a join.sh file which can be used to add new nodes
 f1 = open("joining.txt", "r")
 cmd = ""
 for line in f1:
